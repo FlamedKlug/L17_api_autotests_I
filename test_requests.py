@@ -104,6 +104,13 @@ def test_method_response_no_body_delete_users():
     response = requests.delete(base_url + endpoint_users + "/2",
                                headers=header_auth)
     assert response.status_code == 204
+
+    # Тут три разных способа проверить, что в ответе нет json-а
+    assert response.text == ''
+    try:
+        data = response.json()
+    except requests.exceptions.JSONDecodeError:
+        print("Ошибка декодирования JSON: ответ от API не является валидным JSON.")
     with pytest.raises(ValueError):
         data = response.json()
 
